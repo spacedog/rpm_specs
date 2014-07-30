@@ -1,6 +1,6 @@
 Name:           ike
 Version:        2.2.1
-Release:        1%{?dist}
+Release:        2%{?dist}
 Summary:        Shrew Soft VPN Client For Linux
 Group:          Applications/Communications
 License:        Sleepycat
@@ -60,22 +60,6 @@ install -m 0644 -p %{SOURCE3} $RPM_BUILD_ROOT%{_sysconfdir}/logrotate.d/%{name}
 %clean
 rm -rf $RPM_BUILD_ROOT
 
-%preun
-if [ $1 = 0 ] ; then
-    /sbin/service %{name}d stop >/dev/null 2>&1
-    /sbin/chkconfig --del %{name}d
-fi
-
-%post
-/sbin/ldconfig
-/sbin/chkconfig --add %{name}d
-/sbin/service %{name}d start >/dev/null 2>&1
-
-%postun
-/sbin/ldconfig
-if [ "$1" -ge "1" ] ; then
-    /sbin/service %{name}d condrestart >/dev/null 2>&1 || :
-fi
 
 %files
 %defattr(-,root,root,-)
